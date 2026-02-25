@@ -1,92 +1,11 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shahar Tal Music</title>
-    <style>
-        /* General styling */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background: #121212;
-            color: #f0f0f0;
-        }
-        
-        h1 {
-            color: #ff8800;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-        }
-
-        #song-list {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .song {
-            margin: 10px 0;
-            cursor: pointer;
-            color: #6699ff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .song:hover {
-            color: #ff4444;
-            transform: scale(1.1);
-        }
-
-        audio {
-            margin-top: 20px;
-            width: 100%;
-            max-width: 600px;
-            border: 2px solid #444;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-            background-color: #222;
-        }
-
-        #current-song {
-            margin-top: 20px;
-            font-size: 1.4rem;
-            color: #ffcc00;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .song {
-            animation: fadeIn 0.5s ease-in-out both;
-        }
-    </style>
-</head>
-<body>
-    <h1>🎵 Shahar Tal Music 🎵</h1>
-    <div id="current-song">מנגן כעת: כלום</div>
-    <audio id="audio-player" controls></audio>
-    <div id="song-list"></div>
-
-    <script>
-        /* ב-GitHub Pages, כשהקבצים נמצאים באותה תיקייה, 
-           משאירים את הכתובת ריקה או שמים נקודה ולוכסן 
-        */
+<script>
         const baseURL = "./"; 
 
-        /* כאן אתה חייב לרשום את השמות המדויקים של הקבצים שהעלית ל-GitHub!
-           שים לב: זה רגיש לאותיות גדולות/קטנות (Case Sensitive).
-        */
+        // וודא ששמות הקבצים כאן תואמים בדיוק למה שמופיע ברשימת הקבצים ב-GitHub
         const songs = [
             "midnight.mp3", 
             "Chill.mp3",
-            "Memories.mp3"
+            "RetroWaveRadio-Flashdance.mp3"
         ];
 
         const songList = document.getElementById('song-list');
@@ -95,7 +14,6 @@
 
         songs.forEach(song => {
             const songElement = document.createElement('div');
-            // מוריד את הסיומת .mp3 מהתצוגה שיהיה יפה
             songElement.textContent = song.replace('.mp3', ''); 
             songElement.className = 'song';
             songElement.onclick = () => playSong(song);
@@ -103,13 +21,14 @@
         });
 
         function playSong(song) {
-            audioPlayer.src = baseURL + song;
+            // encodeURI מטפל במקפים ותווים מיוחדים בכתובת האתר
+            audioPlayer.src = encodeURI(baseURL + song);
+            
             currentSong.textContent = `מנגן כעת: ${song.replace('.mp3', '')}`;
+            
             audioPlayer.play().catch(error => {
                 console.error("Error playing song:", error);
-                alert("שגיאה בניגון הקובץ. וודא ששם הקובץ ב-GitHub זהה בדיוק לשם בקוד.");
+                alert("לא הצלחתי למצוא את הקובץ: " + song + "\nוודא שהשם ב-GitHub זהה בדיוק (אותיות גדולות/קטנות).");
             });
         }
     </script>
-</body>
-</html>
