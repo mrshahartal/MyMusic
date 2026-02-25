@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background: #121212;;
+            background: #121212;
             color: #f0f0f0;
         }
         
@@ -40,10 +40,6 @@
             transform: scale(1.1);
         }
 
-        .song:active {
-            color: #00cc99;
-        }
-
         audio {
             margin-top: 20px;
             width: 100%;
@@ -52,25 +48,8 @@
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
             background-color: #222;
-            color: #f0f0f0;
         }
 
-        /* Customize audio controls */
-        audio::-webkit-media-controls-panel {
-            background-color: #222;
-            color: #f0f0f0;
-            border-radius: 10px;
-        }
-
-        audio::-webkit-media-controls-play-button,
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display,
-        audio::-webkit-media-controls-timeline,
-        audio::-webkit-media-controls-volume-slider {
-            color: #f0f0f0;
-        }
-
-        /* Currently playing song display */
         #current-song {
             margin-top: 20px;
             font-size: 1.4rem;
@@ -78,44 +57,35 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
         }
 
-        /* Keyframe animation */
+        /* Animation */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Apply animation to the song list */
         .song {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in-out both;
         }
-
-        /* Add delay for sequential appearance */
-        .song:nth-child(1) { animation-delay: 0.1s; }
-        .song:nth-child(2) { animation-delay: 0.2s; }
-        .song:nth-child(3) { animation-delay: 0.3s; }
-        .song:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
-    <h1>🎵 Shahar Tal 🎵</h1>
-    <div id="current-song">Now Playing: None</div>
+    <h1>🎵 Shahar Tal Music 🎵</h1>
+    <div id="current-song">מנגן כעת: כלום</div>
     <audio id="audio-player" controls></audio>
     <div id="song-list"></div>
 
     <script>
-        // FTP Server HTTP URL where MP3 files are hosted
-        const ftpBaseURL = "http://localhost/mysite/";
+        /* ב-GitHub Pages, כשהקבצים נמצאים באותה תיקייה, 
+           משאירים את הכתובת ריקה או שמים נקודה ולוכסן 
+        */
+        const baseURL = "./"; 
 
-        // List of songs (manually hardcoded or fetched if allowed)
+        /* כאן אתה חייב לרשום את השמות המדויקים של הקבצים שהעלית ל-GitHub!
+           שים לב: זה רגיש לאותיות גדולות/קטנות (Case Sensitive).
+        */
         const songs = [
+            "midnight.mp3", 
             "Chill.mp3",
-            "Memories.mp3",
             "RetroWaveRadio - Flashdance.mp3"
         ];
 
@@ -123,24 +93,23 @@
         const audioPlayer = document.getElementById('audio-player');
         const currentSong = document.getElementById('current-song');
 
-        // Populate the song list
         songs.forEach(song => {
             const songElement = document.createElement('div');
-            songElement.textContent = song;
+            // מוריד את הסיומת .mp3 מהתצוגה שיהיה יפה
+            songElement.textContent = song.replace('.mp3', ''); 
             songElement.className = 'song';
             songElement.onclick = () => playSong(song);
             songList.appendChild(songElement);
         });
 
-        // Function to play the selected song
         function playSong(song) {
-            audioPlayer.src = ftpBaseURL + song;
-            currentSong.textContent = `Now Playing: ${song}`;
+            audioPlayer.src = baseURL + song;
+            currentSong.textContent = `מנגן כעת: ${song.replace('.mp3', '')}`;
             audioPlayer.play().catch(error => {
-                alert(`Error playing ${song}: ${error.message}`);
+                console.error("Error playing song:", error);
+                alert("שגיאה בניגון הקובץ. וודא ששם הקובץ ב-GitHub זהה בדיוק לשם בקוד.");
             });
         }
     </script>
 </body>
 </html>
-
