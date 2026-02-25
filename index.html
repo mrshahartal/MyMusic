@@ -28,7 +28,7 @@
             color: #ff8800;
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-transform: uppercase;
+            text-transform: none; /* ביטול הפיכה לאותיות גדולות אוטומטית כדי לשמור על ה-Case */
             letter-spacing: 2px;
         }
 
@@ -45,27 +45,7 @@
         audio {
             width: 100%;
             margin-bottom: 20px;
-            filter: invert(1) hue-rotate(180deg); /* הופך את הנגן לכהה */
-        }
-
-        .controls {
-            margin-bottom: 30px;
-        }
-
-        button {
-            background: #ff8800;
-            border: none;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #ff4444;
-            transform: translateY(-2px);
+            filter: invert(1) hue-rotate(180deg);
         }
 
         #song-list {
@@ -97,7 +77,6 @@
             border-right: 4px solid #ff8800;
         }
 
-        /* עיצוב פס גלילה */
         #song-list::-webkit-scrollbar { width: 8px; }
         #song-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
     </style>
@@ -105,51 +84,47 @@
 <body>
 
     <div class="container">
-        <h1>🎵 Shahar A Tal 🎵</h1>
+        <h1>🎵 Shahar Tal 🎵</h1>
         
         <div id="current-song">בוחרים שיר ומתחילים...</div>
         
-        <audio id="audio-player" controls></audio>
+        <audio id="audio-player" border-radius="10px" controls></audio>
         
-        <div class="controls">
-            <button onclick="playRandom()">🔀 שיר אקראי (Shuffle)</button>
-        </div>
-
         <div id="song-list">
             </div>
     </div>
 
     <script>
         const baseURL = "./"; 
+        let currentSongIndex = -1;
 
-        // כאן אתה מעדכן את הרשימה כשאתה מוסיף קבצים ל-GitHub
         const songs = [
             "BillieEilish-Lovely.mp3",
             "RetroWaveRadio-Flashdance.mp3"
-            ];
+        ];
 
         const songList = document.getElementById('song-list');
         const audioPlayer = document.getElementById('audio-player');
         const currentSongDisplay = document.getElementById('current-song');
 
-        // טעינת הרשימה למסך
         function loadPlaylist() {
             songList.innerHTML = '';
             songs.forEach((song, index) => {
                 const div = document.createElement('div');
                 div.className = 'song';
                 div.innerHTML = `<span>${index + 1}. ${song.replace('.mp3', '')}</span> <span>▶️</span>`;
-                div.onclick = () => playSong(song, div);
+                div.onclick = () => {
+                    currentSongIndex = index;
+                    playSong(song, div);
+                };
                 songList.appendChild(div);
             });
         }
 
         function playSong(song, element) {
-            // טיפול בסימון השיר הפעיל
             document.querySelectorAll('.song').forEach(s => s.classList.remove('active'));
             if(element) element.classList.add('active');
 
-            // ניגון
             audioPlayer.src = encodeURI(baseURL + song);
             currentSongDisplay.textContent = `מנגן כעת: ${song.replace('.mp3', '')}`;
             
@@ -159,22 +134,19 @@
             });
         }
 
-        function playRandom() {
-            const randomIndex = Math.floor(Math.random() * songs.length);
-            const allSongs = document.querySelectorAll('.song');
-            playSong(songs[randomIndex], allSongs[randomIndex]);
-        }
-
-        // ניגון אוטומטי של השיר הבא בסיום
+        // מעבר אוטומטי לשיר הבא
         audioPlayer.onended = () => {
-            playRandom(); // או שאפשר לבנות פונקציה לשיר הבא בתור
+            currentSongIndex++;
+            if (currentSongIndex < songs.length) {
+                const allSongs = document.querySelectorAll('.song');
+                playSong(songs[currentSongIndex], allSongs[currentSongIndex]);
+            } else {
+                currentSongDisplay.textContent = "הפלייליסט הסתיים.";
+                currentSongIndex = -1;
+            }
         };
 
         loadPlaylist();
     </script>
 </body>
 </html>
-
-
-
-
