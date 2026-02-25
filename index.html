@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahar Tal Music</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #121212;;
+            color: #f0f0f0;
+        }
+        
+        h1 {
+            color: #ff8800;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        #song-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .song {
+            margin: 10px 0;
+            cursor: pointer;
+            color: #6699ff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .song:hover {
+            color: #ff4444;
+            transform: scale(1.1);
+        }
+
+        .song:active {
+            color: #00cc99;
+        }
+
+        audio {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            background-color: #222;
+            color: #f0f0f0;
+        }
+
+        /* Customize audio controls */
+        audio::-webkit-media-controls-panel {
+            background-color: #222;
+            color: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display,
+        audio::-webkit-media-controls-timeline,
+        audio::-webkit-media-controls-volume-slider {
+            color: #f0f0f0;
+        }
+
+        /* Currently playing song display */
+        #current-song {
+            margin-top: 20px;
+            font-size: 1.4rem;
+            color: #ffcc00;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Keyframe animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply animation to the song list */
+        .song {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Add delay for sequential appearance */
+        .song:nth-child(1) { animation-delay: 0.1s; }
+        .song:nth-child(2) { animation-delay: 0.2s; }
+        .song:nth-child(3) { animation-delay: 0.3s; }
+        .song:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <h1>🎵 Shahar Tal 🎵</h1>
+    <div id="current-song">Now Playing: None</div>
+    <audio id="audio-player" controls></audio>
+    <div id="song-list"></div>
+
+    <script>
+        // FTP Server HTTP URL where MP3 files are hosted
+        const ftpBaseURL = "http://localhost/mysite/";
+
+        // List of songs (manually hardcoded or fetched if allowed)
+        const songs = [
+            "Chill.mp3",
+            "Memories.mp3",
+            "Reiki.mp3",
+	"Celtic.mp3"
+        ];
+
+        const songList = document.getElementById('song-list');
+        const audioPlayer = document.getElementById('audio-player');
+        const currentSong = document.getElementById('current-song');
+
+        // Populate the song list
+        songs.forEach(song => {
+            const songElement = document.createElement('div');
+            songElement.textContent = song;
+            songElement.className = 'song';
+            songElement.onclick = () => playSong(song);
+            songList.appendChild(songElement);
+        });
+
+        // Function to play the selected song
+        function playSong(song) {
+            audioPlayer.src = ftpBaseURL + song;
+            currentSong.textContent = `Now Playing: ${song}`;
+            audioPlayer.play().catch(error => {
+                alert(`Error playing ${song}: ${error.message}`);
+            });
+        }
+    </script>
+</body>
+</html>
