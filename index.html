@@ -28,7 +28,7 @@
             color: #ff8800;
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-transform: none; /* ביטול הפיכה לאותיות גדולות אוטומטית כדי לשמור על ה-Case */
+            text-transform: none;
             letter-spacing: 2px;
         }
 
@@ -90,16 +90,17 @@
         
         <audio id="audio-player" border-radius="10px" controls></audio>
         
-        <div id="song-list">
-            </div>
+        <div id="song-list"></div>
     </div>
 
     <script>
-        const baseURL = "./"; 
         let currentSongIndex = -1;
 
         const songs = [
-            "Trading Music.mp3"
+            {
+                name: "Trading Music",
+                url: "https://www.dropbox.com/scl/fi/v4roexx55ry2ebo0gjeze/Trading-Music.mp3?rlkey=vtljpnrcebmud0z2b5esdi7yz&st=v7wkj6og&raw=1"
+            }
         ];
 
         const songList = document.getElementById('song-list');
@@ -111,7 +112,7 @@
             songs.forEach((song, index) => {
                 const div = document.createElement('div');
                 div.className = 'song';
-                div.innerHTML = `<span>${index + 1}. ${song.replace('.mp3', '')}</span> <span>▶️</span>`;
+                div.innerHTML = `<span>${index + 1}. ${song.name}</span> <span>▶️</span>`;
                 div.onclick = () => {
                     currentSongIndex = index;
                     playSong(song, div);
@@ -124,12 +125,12 @@
             document.querySelectorAll('.song').forEach(s => s.classList.remove('active'));
             if(element) element.classList.add('active');
 
-            audioPlayer.src = encodeURI(baseURL + song);
-            currentSongDisplay.textContent = `מנגן כעת: ${song.replace('.mp3', '')}`;
+            audioPlayer.src = song.url;
+            currentSongDisplay.textContent = `מנגן כעת: ${song.name}`;
             
             audioPlayer.play().catch(e => {
                 console.error(e);
-                alert("שגיאה: וודא ששם הקובץ ב-GitHub תואם בדיוק לקוד!");
+                alert("שגיאה בניגון הקובץ. ודא שהקישור תקין ופעיל.");
             });
         }
 
@@ -149,7 +150,3 @@
     </script>
 </body>
 </html>
-
-
-
-
