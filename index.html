@@ -8,60 +8,66 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, #121212 0%, #1a1a2e 100%);
             color: #f0f0f0;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            box-sizing: border-box;
         }
 
         .container {
-            max-width: 700px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 450px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
         }
 
         h1 {
             color: #ff8800;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
             text-transform: none;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
 
         #current-song {
             background: #222;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 1.2rem;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 0.95rem;
             color: #ffcc00;
-            border-right: 5px solid #ff8800;
+            border-left: 4px solid #ff8800;
             direction: ltr;
             text-align: left;
         }
 
         audio {
             width: 100%;
-            margin-bottom: 20px;
+            height: 36px;
+            margin-bottom: 15px;
             filter: invert(1) hue-rotate(180deg);
         }
 
         #song-list {
             display: grid;
-            gap: 10px;
-            max-height: 400px;
+            gap: 6px;
+            max-height: 300px;
             overflow-y: auto;
-            padding-left: 10px;
+            padding-right: 4px;
         }
 
         .song {
             background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
             display: flex;
@@ -69,21 +75,20 @@
             align-items: center;
             direction: ltr;
             text-align: left;
+            font-size: 0.9rem;
         }
 
         .song:hover {
             background: rgba(102, 153, 255, 0.3);
-            border-left: 4px solid #6699ff;
-            border-right: none;
+            border-left: 3px solid #6699ff;
         }
 
         .song.active {
             background: rgba(255, 136, 0, 0.2);
-            border-left: 4px solid #ff8800;
-            border-right: none;
+            border-left: 3px solid #ff8800;
         }
 
-        #song-list::-webkit-scrollbar { width: 8px; }
+        #song-list::-webkit-scrollbar { width: 6px; }
         #song-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
     </style>
 </head>
