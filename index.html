@@ -8,13 +8,13 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            padding: 20px 15px;
+            padding: 15px;
             background: linear-gradient(135deg, #121212 0%, #1a1a2e 100%);
             color: #f0f0f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             margin: 0;
             box-sizing: border-box;
         }
@@ -136,4 +136,43 @@
 
         function loadPlaylist() {
             songList.innerHTML = '';
-            songs.forEach((song
+            songs.forEach((song, index) => {
+                const div = document.createElement('div');
+                div.className = 'song';
+                div.innerHTML = `<span>${index + 1}. ${song.name}</span> <span>▶️</span>`;
+                div.onclick = () => {
+                    currentSongIndex = index;
+                    playSong(song, div);
+                };
+                songList.appendChild(div);
+            });
+        }
+
+        function playSong(song, element) {
+            document.querySelectorAll('.song').forEach(s => s.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            audioPlayer.src = song.url;
+            currentSongDisplay.textContent = `Now Playing: ${song.name}`;
+            
+            audioPlayer.play().catch(e => {
+                console.error(e);
+                alert("שגיאה בניגון הקובץ. ודא שהקישור תקין ופעיל.");
+            });
+        }
+
+        audioPlayer.onended = () => {
+            currentSongIndex++;
+            if (currentSongIndex < songs.length) {
+                const allSongs = document.querySelectorAll('.song');
+                playSong(songs[currentSongIndex], allSongs[currentSongIndex]);
+            } else {
+                currentSongDisplay.textContent = "Playlist finished.";
+                currentSongIndex = -1;
+            }
+        };
+
+        loadPlaylist();
+    </script>
+</body>
+</html>
