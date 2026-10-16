@@ -40,6 +40,8 @@
             font-size: 1.2rem;
             color: #ffcc00;
             border-right: 5px solid #ff8800;
+            direction: ltr;
+            text-align: left;
         }
 
         audio {
@@ -65,16 +67,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            direction: ltr;
+            text-align: left;
         }
 
         .song:hover {
             background: rgba(102, 153, 255, 0.3);
-            border-right: 4px solid #6699ff;
+            border-left: 4px solid #6699ff;
+            border-right: none;
         }
 
         .song.active {
             background: rgba(255, 136, 0, 0.2);
-            border-right: 4px solid #ff8800;
+            border-left: 4px solid #ff8800;
+            border-right: none;
         }
 
         #song-list::-webkit-scrollbar { width: 8px; }
@@ -86,9 +92,9 @@
     <div class="container">
         <h1>🎵 Shahar Tal 🎵</h1>
         
-        <div id="current-song">בוחרים שיר ומתחילים...</div>
+        <div id="current-song">Select a song to start...</div>
         
-        <audio id="audio-player" border-radius="10px" controls></audio>
+        <audio id="audio-player" controls></audio>
         
         <div id="song-list"></div>
     </div>
@@ -96,7 +102,7 @@
     <script>
         let currentSongIndex = -1;
 
-const songs = [
+        const songs = [
             {
                 name: "Jazz Lounge",
                 url: "https://www.dropbox.com/scl/fi/mbjxg9usp2nrti3ddemr3/Vintage-Parisian-Jazz-Lounge-Relaxing-Instrumental-Retro-Jazz-Music.mp3?rlkey=u5bfctphddpv2j04orrmo4j6h&st=rowonz98&raw=1"
@@ -138,7 +144,7 @@ const songs = [
             if(element) element.classList.add('active');
 
             audioPlayer.src = song.url;
-            currentSongDisplay.textContent = `מנגן כעת: ${song.name}`;
+            currentSongDisplay.textContent = `Now Playing: ${song.name}`;
             
             audioPlayer.play().catch(e => {
                 console.error(e);
@@ -146,14 +152,13 @@ const songs = [
             });
         }
 
-        // מעבר אוטומטי לשיר הבא
         audioPlayer.onended = () => {
             currentSongIndex++;
             if (currentSongIndex < songs.length) {
                 const allSongs = document.querySelectorAll('.song');
                 playSong(songs[currentSongIndex], allSongs[currentSongIndex]);
             } else {
-                currentSongDisplay.textContent = "הפלייליסט הסתיים.";
+                currentSongDisplay.textContent = "Playlist finished.";
                 currentSongIndex = -1;
             }
         };
